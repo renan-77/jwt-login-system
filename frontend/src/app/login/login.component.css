@@ -1,0 +1,16 @@
+.primary-blue{
+    background-color: #17a2ff;
+}
+
+.light-blue{
+    background-color: #6FB7FC;
+}
+
+.main-content mat-card{
+    padding: 0px;
+    border-radius: 10px;
+}
+
+.login-form{
+    padding: 20px;
+}
