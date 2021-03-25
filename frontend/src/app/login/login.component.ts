@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../data.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
 
-    constructor(private dataService: DataService, private router: Router) { }
+    constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.loginForm = new FormGroup({
@@ -23,12 +23,13 @@ export class LoginComponent implements OnInit {
     onSubmit(user): void{
         let login;
         this.dataService.checkUser(user).subscribe( response => {
-            console.log(response);
             login = response.login;
+            console.log(response.access_token);
+            localStorage.setItem('token', response.access_token);
+            localStorage.setItem('eu', 'renan');
 
             if (login === true){
-                console.log(`Login: ${login}`);
-                this.router.navigate(['/home']);
+                this.router.navigateByUrl('/home');
             }else{
                 console.log(response.response);
             }

@@ -1,7 +1,8 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_restplus import Resource
-from app import api, password_encrypt, session
+from app import api, password_encrypt, session, app
 from app.models.user import User
+from flask_jwt_extended import jwt_required, create_access_token
 
 
 @api.route('/user')
@@ -23,27 +24,35 @@ class UserAll(Resource):
             return jsonify({'response': 'Sorry, an error has occurred'})
 
 
-@api.route('/user/<user_email>')
+@api.route('/login')
 class UserByEmail(Resource):
 
     # Function to check for user and it's password.
-    def post(self, user_email):
+    def post(self):
         try:
+            data = api.payload
             # Checking if user exists in database by email (defined as unique).
-            if User.objects(email=user_email):
-                data = api.payload
+            if User.objects(email=data['email']):
 
-                print(data)
                 # Checking if the password match with the one hashed on the db.
-                if password_encrypt.compare_passwords(data['password'], User.objects(email=user_email)[0].password):
-                    session['logged_in'] = True
-                    return jsonify({'response': 'Login Successful', 'login': True})
+                if password_encrypt.compare_passwords(data['password'], User.objects(email=data['email'])[0].password):
+                    # session['logged_in'] = True
+                    access_token = create_access_token(identity=data['email'])
+                    # print(access_token)
+                    return jsonify(message='Login Successful', login=True, access_token=access_token)
 
                 else:
-                    return jsonify({'response': 'Wrong Password, Try Again', 'login': False})
+                    return jsonify(message='Password is wrong!', login=False)
 
             else:
-                return jsonify({'response': 'Sorry, user does not exist', 'login': False})
+                return jsonify(message='User does not exist', login=False)
 
-        except:
-            return jsonify({'response': 'Sorry, an error has occurred', 'login': False})
+        except Exception as e:
+            return jsonify(message='An error has occurred', error=str(e), login=False)
+
+
+@app.route('/auth', methods=['GET'])
+@jwt_required()
+def auth():
+    print(str(request.headers))
+    return jsonify(login=True)

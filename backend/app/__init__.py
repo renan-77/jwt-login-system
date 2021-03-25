@@ -5,6 +5,7 @@ from flask_mongoengine import MongoEngine
 from config import Config
 from flask_bcrypt import Bcrypt
 from flask_session import Session
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -13,6 +14,7 @@ CORS(app, support_credentials=True)
 db = MongoEngine(app=app)
 bcrypt = Bcrypt(app=app)
 session = Session(app=app)
+jwt = JWTManager(app=app)
 
 from app import routes
 
