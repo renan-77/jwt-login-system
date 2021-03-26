@@ -8,6 +8,7 @@ import {DataService} from '../data.service';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+    // Getting token from local storage.
     token = localStorage.getItem('token');
 
     constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
@@ -15,21 +16,23 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         let authenticated = false;
 
-        if (this.token === null){
-            this.redirectHomePage();
-        }
-
+        // Calling authenticate function with token as parameter.
         this.dataService.authenticateUser(this.token).subscribe(response => {
             console.log(`Api Response: ${response.login}`);
+
+            // Assigning the response from the call to authenticated variable.
             authenticated = response.login;
-            if (!authenticated){
-                this.redirectHomePage();
-            }else {
-                console.log(authenticated);
-            }
         });
+
+        // Checking if token is null or if authenticated is false.
+        if (this.token === null || !authenticated){
+            this.redirectHomePage();
+        }
     }
 
+    /**
+     * Redirect to home.
+     */
     redirectHomePage(): void{
         console.log('If you\'re here is because the api returned false or an error.');
         this.router.navigateByUrl('/login');

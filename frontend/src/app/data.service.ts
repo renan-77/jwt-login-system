@@ -12,6 +12,10 @@ export class DataService implements HttpInterceptor {
 
     constructor(private http: HttpClient) {}
 
+    /**
+     * Function that returns the token in case login is successful
+     * @param user: object
+     */
     checkUser(user): Observable<any> {
         return this.http.post(this.loginUrl, user);
     }
@@ -20,6 +24,10 @@ export class DataService implements HttpInterceptor {
         return undefined;
     }
 
+    /**
+     * Checking token with function from the API
+     * @param token: string
+     */
     authenticateUser(token): Observable<any> {
         const headers = { Accept: 'text/html', Authorization: `Bearer ${token}`};
 

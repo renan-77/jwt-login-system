@@ -20,15 +20,20 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    /**
+     * Checking login of the user on submit of the form
+     * @param user: object
+     */
     onSubmit(user): void{
         let login;
         this.dataService.checkUser(user).subscribe( response => {
+            // Assigning login boolean to a variable.
             login = response.login;
-            console.log(response.access_token);
-            localStorage.setItem('token', response.access_token);
-            localStorage.setItem('eu', 'renan');
 
+            // Checking if login is successful.
             if (login === true){
+                // Setting received token to local storage.
+                localStorage.setItem('token', response.access_token);
                 this.router.navigateByUrl('/home');
             }else{
                 console.log(response.response);
