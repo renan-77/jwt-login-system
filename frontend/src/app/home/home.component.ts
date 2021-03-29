@@ -12,4 +12,9 @@ export class HomeComponent implements OnInit {
     constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit(): void {}
+
+    clearStorage(): void{
+        localStorage.clear();
+        this.router.navigateByUrl('/login');
+    }
 }

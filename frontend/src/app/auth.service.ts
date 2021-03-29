@@ -10,6 +10,7 @@ import {JwtHelperService, JwtModuleOptions} from '@auth0/angular-jwt';
 export class AuthService {
     private readonly loginUrl: string = 'http://localhost:5000/login';
     private readonly authUrl: string = 'http://localhost:5000/auth';
+    private readonly userUrl: string = 'http://localhost:5000/user';
 
     constructor(private http: HttpClient) {}
 
@@ -42,5 +43,14 @@ export class AuthService {
      */
     public getToken(): string {
         return localStorage.getItem('token');
+    }
+
+    /**
+     * Registering user from form submit
+     */
+    registerUser(user): void{
+        this.http.post(this.userUrl, user).subscribe(() => {
+            console.log('New user created');
+        });
     }
 }

@@ -17,6 +17,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import {TokenInterceptor} from './token.interceptor';
 import {AuthGuard} from './auth.guard';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {AuthGuard} from './auth.guard';
         MatToolbarModule,
         ReactiveFormsModule,
         HttpClientModule,
+        MatSnackBarModule
 
     ],
     providers: [{

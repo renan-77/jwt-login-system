@@ -1,0 +1,17 @@
+.primary-blue{
+    background-color: #17a2ff;
+}
+
+.light-blue{
+    background-color: #6FB7FC;
+}
+
+button{
+    margin-top: 5px;
+    border: 0;
+    width: 100%;
+    background-color: #79C0FF;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
