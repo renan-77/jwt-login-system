@@ -15,6 +15,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
+import {TokenInterceptor} from './token.interceptor';
+import {AuthGuard} from './auth.guard';
+
 
 @NgModule({
     declarations: [
@@ -34,8 +37,15 @@ import { HomeComponent } from './home/home.component';
         MatToolbarModule,
         ReactiveFormsModule,
         HttpClientModule,
+
     ],
-    providers: [],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenInterceptor,
+        multi: true
+    },
+        AuthGuard
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

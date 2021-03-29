@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from '../data.service';
+import {AuthService} from '../auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
 
-    constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+    constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.loginForm = new FormGroup({
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
      */
     onSubmit(user): void{
         let login;
-        this.dataService.checkUser(user).subscribe( response => {
+        this.authService.checkUser(user).subscribe( response => {
             // Assigning login boolean to a variable.
             login = response.login;
 
