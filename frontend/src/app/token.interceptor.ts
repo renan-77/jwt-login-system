@@ -10,7 +10,7 @@ import {AuthService} from './auth.service';
 
 @Injectable()
 /**
- * Class used for intercepting http requests and adding a header to it.
+ * Class used for intercepting http requests and adding an Authorization header (JWT Token) to it for authentication purpose on backend.
  */
 export class TokenInterceptor implements HttpInterceptor {
 
@@ -25,6 +25,7 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         console.log('Using intercept here');
         request = request.clone({
+            //
             setHeaders: {
                 Authorization: `Bearer ${this.authService.getToken()}`
             }
