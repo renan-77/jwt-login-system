@@ -11,15 +11,18 @@ export class AuthGuard implements CanActivate {
      * Checks if the user is authenticated when trying to access the route.
      */
     canActivate(): boolean {
+        // Checking if the user is authenticated.
         if (!this.auth.isAuthenticated()) {
-            this.router.navigate(['login']);
+            this.router.navigateByUrl('login');
             return false;
         }
         return true;
     }
 
+    /**
+     * Function to redirect user to login page.
+     */
     redirectLogin(): void {
         this.router.navigateByUrl('/login');
     }
-
 }

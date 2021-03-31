@@ -8,6 +8,7 @@ import {JwtHelperService, JwtModuleOptions} from '@auth0/angular-jwt';
     providedIn: 'root'
 })
 export class AuthService {
+    // Declaring API urls.
     private readonly loginUrl: string = 'http://localhost:5000/login';
     private readonly authUrl: string = 'http://localhost:5000/auth';
     private readonly userUrl: string = 'http://localhost:5000/user';
@@ -19,8 +20,10 @@ export class AuthService {
 
     /**
      * Checking if token is valid.
+     * @return: A boolean stating whether the user is successfully logged in or not.
      */
     public isAuthenticated(): boolean {
+        // Assigning token to variable.
         const token = this.getToken();
         // Check whether the token is expired.
         try{
@@ -33,6 +36,7 @@ export class AuthService {
     /**
      * Function that returns the token in case login is successful
      * @param user: object
+     * @return: An observable.
      */
     checkUser(user): Observable<any> {
         return this.http.post(this.loginUrl, user);
@@ -40,6 +44,7 @@ export class AuthService {
 
     /**
      * Getting token from local storage
+     * @return: A string (token).
      */
     public getToken(): string {
         return localStorage.getItem('token');
@@ -47,6 +52,7 @@ export class AuthService {
 
     /**
      * Registering user from form submit
+     * @param user: object
      */
     registerUser(user): void{
         this.http.post(this.userUrl, user).subscribe(() => {

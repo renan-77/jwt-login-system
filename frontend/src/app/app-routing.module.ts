@@ -9,14 +9,13 @@ import {AuthGuard} from './auth.guard';
 const routes: Routes = [
     { path: '',   redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-
+    {path: 'register', component: LoginComponent},
     // Using canActivate to check for valid token
     {
         path: 'home',
         component: HomeComponent,
         canActivate: [AuthGuard]
-    },
-    {path: 'register', component: LoginComponent}
+    }
 ];
 
 @NgModule({

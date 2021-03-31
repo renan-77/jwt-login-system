@@ -42,10 +42,12 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 
     ],
     providers: [{
+        // Providing Interceptor and specifying which class it's declared.
         provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,
         multi: true
     },
+        // Providing AuthGuard with it's class.
         AuthGuard
     ],
     bootstrap: [AppComponent]

@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit {
                 private snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
+        // Getting route from URL.
         this.whichUrl = this.router.url;
-        console.log(this.whichUrl);
 
         // Loads the login form in case url is for login
         if (this.whichUrl === '/login'){
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
     /**
      * Checking login of the user on submit of the form
-     * @param user: object
+     * @param user: object - A JSON from form.
      */
     onLoginSubmit(user): void{
         let login;
@@ -63,14 +63,21 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    /**
+     * Registering user using API call and then redirects the user to /login.
+     * @param user: object - A JSON from form.
+     */
     onRegisterSubmit(user): void{
         try{
             this.authService.registerUser(user);
             this.router.navigateByUrl('/login');
+
+            // Pop-up message with user created.
             this.snackBar.open('New user created', 'Close', {
                 duration: 2000,
             });
         }catch (e) {
+            // Pop-up message with fail on user creation.
             this.snackBar.open('Failed to create user', 'Close', {
                 duration: 2000,
             });
@@ -78,6 +85,10 @@ export class LoginComponent implements OnInit {
 
     }
 
+    /**
+     * Function that redirects the user to the page based on the route passed to it.
+     * @param route: string
+     */
     goTo(route): void{
         this.router.navigateByUrl(route);
     }

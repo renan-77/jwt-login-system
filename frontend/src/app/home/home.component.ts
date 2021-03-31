@@ -13,6 +13,9 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {}
 
+    /**
+     * Clears localStorage from browser and redirects user to login page.
+     */
     clearStorage(): void{
         localStorage.clear();
         this.router.navigateByUrl('/login');

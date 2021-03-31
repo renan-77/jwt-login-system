@@ -13,6 +13,11 @@ export class TokenInterceptor implements HttpInterceptor {
 
     constructor(private authService: AuthService) {}
 
+    /**
+     * Function that intercepts a http request, adds a header and executes it.
+     * @param request: HttpRequest
+     * @param next: HttpHandler
+     */
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         console.log('Using intercept here');
         request = request.clone({
