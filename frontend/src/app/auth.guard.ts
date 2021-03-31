@@ -4,7 +4,13 @@ import { Observable } from 'rxjs';
 import {AuthService} from './auth.service';
 
 @Injectable()
+/**
+ * Class used for authentication of user.
+ * This class is a guard that will be called on route access.
+ */
 export class AuthGuard implements CanActivate {
+
+    // Declaring instances of relevant classes.
     constructor(private auth: AuthService, private router: Router) {}
 
     /**

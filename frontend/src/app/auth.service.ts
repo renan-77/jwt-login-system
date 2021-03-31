@@ -7,12 +7,17 @@ import {JwtHelperService, JwtModuleOptions} from '@auth0/angular-jwt';
 @Injectable({
     providedIn: 'root'
 })
+
+/**
+ * Service used for authentication and API http calls.
+ */
 export class AuthService {
     // Declaring API urls.
     private readonly loginUrl: string = 'http://localhost:5000/login';
     private readonly authUrl: string = 'http://localhost:5000/auth';
     private readonly userUrl: string = 'http://localhost:5000/user';
 
+    // Declaring instance of HttpClient.
     constructor(private http: HttpClient) {}
 
     // Creating instance of JWTHelperService to be provided just for decoding (no need to inject).

@@ -7,9 +7,13 @@ import {HomeComponent} from './home/home.component';
 import {AuthGuard} from './auth.guard';
 
 const routes: Routes = [
+    // Redirecting blank route to login.
     { path: '',   redirectTo: '/login', pathMatch: 'full' },
+
+    // Loading  components on access of route.
     { path: 'login', component: LoginComponent },
     {path: 'register', component: LoginComponent},
+
     // Using canActivate to check for valid token
     {
         path: 'home',
@@ -21,9 +25,11 @@ const routes: Routes = [
 @NgModule({
     declarations: [],
     imports: [
+        // Importing route module passing routes const as parameter.
         RouterModule.forRoot(routes)
     ],
     exports: [
+        // Exporting router module
         RouterModule
     ]
 })

@@ -1,10 +1,6 @@
+// Modules imports
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './login/login.component';
-
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,19 +10,28 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { HomeComponent } from './home/home.component';
-import {TokenInterceptor} from './token.interceptor';
-import {AuthGuard} from './auth.guard';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+// Components imports.
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+
+// Importing classes for access management.
+import {AuthGuard} from './auth.guard';
+import {TokenInterceptor} from './token.interceptor';
 
 
 @NgModule({
     declarations: [
+        // Declaring components.
         AppComponent,
         LoginComponent,
         HomeComponent
     ],
     imports: [
+        // Importing modules from libraries.
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
