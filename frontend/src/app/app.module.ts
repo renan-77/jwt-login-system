@@ -19,8 +19,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 
 // Importing classes for access management.
-import {AuthGuard} from './auth.guard';
-import {TokenInterceptor} from './token.interceptor';
+import {AuthGuard} from './auth/auth.guard';
+import {TokenInterceptor} from './auth/token.interceptor';
 
 
 @NgModule({

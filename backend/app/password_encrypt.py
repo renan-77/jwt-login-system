@@ -7,8 +7,11 @@ def hash_password(password):
 
     :param str password:  A string password.
     """
-    hashed = bcrypt.generate_password_hash(password)
-    return hashed
+    try:
+        hashed = bcrypt.generate_password_hash(password)
+        return hashed
+    except TypeError:
+        return 'Please insert a string to continue'
 
 
 def compare_passwords(password, hashed):
