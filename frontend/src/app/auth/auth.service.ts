@@ -14,7 +14,6 @@ import {JwtHelperService, JwtModuleOptions} from '@auth0/angular-jwt';
 export class AuthService {
     // Declaring API urls.
     private readonly loginUrl: string = 'http://localhost:5000/login';
-    private readonly authUrl: string = 'http://localhost:5000/auth';
     private readonly userUrl: string = 'http://localhost:5000/user';
 
     // Declaring instance of HttpClient.

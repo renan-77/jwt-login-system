@@ -34,7 +34,8 @@ class AppTest(unittest.TestCase):
         Testing if a new insert in the database matches what it should be.
         :return:
         """
-        User(name='latestuser', email='latestuser@dell.com', password='latestuserpass').save()
+        User(name='latestuser', email='latestuser@dell.com', password='latestuserpass').save()  # Adding new user.
+        # Testing if last object registered has the same name as the one just added to it.
         self.assertEqual(list(User.objects.all())[-1].name, 'latestuser')
 
 
