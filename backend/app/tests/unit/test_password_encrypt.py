@@ -9,9 +9,6 @@ class AppTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def tearDown(self):
-        pass
-
     def test_hash_password_string(self):
         """
         Testing if the password as string is encrypted
@@ -40,7 +37,7 @@ class AppTest(unittest.TestCase):
         raw_password = '&testingPassword@2021'
         hashed = password_encrypt.hash_password(raw_password)
         result = password_encrypt.compare_passwords(raw_password, hashed)
-        self.assertEqual(True, result)
+        self.assertTrue(result)
 
     def test_compare_passwords_fail(self):
         """
@@ -49,7 +46,9 @@ class AppTest(unittest.TestCase):
         raw_password = '&testingPassword@2021'
         hashed = password_encrypt.hash_password(raw_password)
         result = password_encrypt.compare_passwords('&anotherPassword@2021', hashed)
-        self.assertEqual(False, result)
+        self.assertFalse(result)
 
+    def tearDown(self):
+        pass
 
 
