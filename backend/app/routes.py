@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_restplus import Resource
 from app import api, password_encrypt, app
 from app.models.user import User
@@ -15,7 +15,7 @@ class UserAll(Resource):
 
         :return: Returns a json with all existing users from the database.
         """
-        return jsonify(User.objects.all())
+        return make_response(jsonify(User.objects.all()), 200)
 
     def post(self):
         """
@@ -32,10 +32,10 @@ class UserAll(Resource):
 
             # Adding new register to database
             User(name=data['name'], email=data['email'], password=data['password']).save()
-            return jsonify({'response': 'Successfully Registered'}), 201
+            return make_response(jsonify(message='Successfully Registered'), 201)
 
         except:
-            return jsonify({'response': 'Sorry, an error has occurred'}), 401
+            return make_response(jsonify(message='Sorry, an error has occurred'), 406)
 
 
 # Creating login route for post request.
@@ -62,13 +62,14 @@ class UserByEmail(Resource):
 
                     # Creating access token for user
                     access_token = create_access_token(identity=data['email'])
-                    return jsonify(message='Login Successful', login=True, access_token=access_token), 201
+                    return make_response(jsonify(message='Login Successful', login=True, access_token=access_token),
+                                         201)
 
                 else:
-                    return jsonify(message='Password is wrong!', login=False), 401
+                    return make_response(jsonify(message='Password is wrong!', login=False), 401)
 
             else:
-                return jsonify(message='User does not exist', login=False), 401
+                return make_response(jsonify(message='User does not exist', login=False), 401)
 
         except Exception as e:
-            return jsonify(message='An error has occurred', error=str(e), login=False), 401
+            return make_response(jsonify(message='An error has occurred', error=str(e), login=False), 406)

@@ -16,6 +16,14 @@ class ApiResponseMock(object):
     def __init__(self, response):
         self.status_code = response.status_code
         self.data = response.data.decode()
+        self.data_json = response.json
+        try:
+            self.message = response.json['message']
+            self.login = response.json['login']
+        except TypeError:
+            print('Method get (does not return message/login)')
+        except KeyError:
+            print('User register has no \'login\' key')
 
 
 class ExpectedResponse(object):
@@ -92,15 +100,16 @@ class ApiTest(unittest.TestCase):
             }
             result = client.post(
                 '/user',
-                data=user,
+                data=json.dumps(user),
                 content_type='application/json'
             )
+            # Creating expected response object.
+            expected = ExpectedResponse(201, 'Successfully Registered')
             # Assigning API response relevant fields to an instance of the object
             response = ApiResponseMock(result)
 
-            self.assertEqual('Successfully Registered', response.data.response)
-            # Testing if last object registered has the same name as the one just added to it.
-            # self.assertEqual(list(User.objects.all())[-1].name, 'testing')
+            self.assertEqual(expected.data, response.message)
+            self.assertEqual(expected.status_code, response.status_code)
 
     def test_routes_user_all_post_fail(self):
         """
@@ -114,12 +123,16 @@ class ApiTest(unittest.TestCase):
             }
             result = client.post(
                 '/user',
-                data=user,
+                data=json.dumps(user),
                 content_type='application/json'
             )
-            # Getting response from the API
-            api_response = json.loads(result.data.decode())['response']
-            self.assertEqual('Sorry, an error has occurred', api_response)
+            # Creating expected response object.
+            expected = ExpectedResponse(406, 'Sorry, an error has occurred')
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
+
+            self.assertEqual(expected.data, response.message)
+            self.assertEqual(expected.status_code, response.status_code)
 
     def test_routes_user_by_email_login_success(self):
         """
@@ -136,11 +149,16 @@ class ApiTest(unittest.TestCase):
                 data=json.dumps(user),
                 content_type='application/json'
             )
-            # Check result from server response.
-            api_response = json.loads(result.data.decode())['login']
-            self.assertTrue(api_response)
+            # Creating expected response object.
+            expected = ExpectedResponse(201, 'Login Successful')
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
 
-    def test_routes_user_by_email_login_fail(self):
+            self.assertEqual(expected.data, response.message)
+            self.assertTrue(response.login)
+            self.assertEqual(expected.status_code, response.status_code)
+
+    def test_routes_user_by_email_login_fail_password(self):
         """
         Testing for login fail.
         """
@@ -152,12 +170,45 @@ class ApiTest(unittest.TestCase):
             }
             result = client.post(
                 '/login',
-                data=user,
+                data=json.dumps(user),
                 content_type='application/json'
             )
-            # Check result from server response.
-            api_response = json.loads(result.data.decode())['login']
-            self.assertFalse(api_response)
+            # Creating expected response object.
+            expected = ExpectedResponse(401, 'Password is wrong!')
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
+
+            # print('Error is:', result.json['error'])
+
+            self.assertEqual(expected.data, response.message)
+            self.assertFalse(response.login)
+            self.assertEqual(expected.status_code, response.status_code)
+
+    def test_routes_user_by_email_login_fail_email(self):
+        """
+        Testing for login fail.
+        """
+        with app.app.test_client() as client:
+            # Send data as POST form to endpoint, passing not enough data for api, expected error.
+            user = {
+                'email': 'user190@dell.com',
+                'password': 'user1password'
+            }
+            result = client.post(
+                '/login',
+                data=json.dumps(user),
+                content_type='application/json'
+            )
+            # Creating expected response object.
+            expected = ExpectedResponse(401, 'User does not exist')
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
+
+            # print('Error is:', result.json['error'])
+
+            self.assertEqual(expected.data, response.message)
+            self.assertFalse(response.login)
+            self.assertEqual(expected.status_code, response.status_code)
 
     def test_routes_user_by_email_post_bad_body(self):
         """
@@ -173,6 +224,13 @@ class ApiTest(unittest.TestCase):
                 data=json.dumps(user),
                 content_type='application/json'
             )
-            # Check result from server response.
-            api_response = json.loads(result.data.decode())['login']
-            self.assertFalse(api_response)
+            # Creating expected response object.
+            expected = ExpectedResponse(406, 'An error has occurred')
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
+
+            # print('Error is:', result.json['error'])
+
+            self.assertEqual(expected.data, response.message)
+            self.assertFalse(response.login)
+            self.assertEqual(expected.status_code, response.status_code)
