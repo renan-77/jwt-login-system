@@ -11,12 +11,20 @@ app.app.testing = True
 
 class ApiResponseMock(object):
     """
-    An object to define a standard API Response.
+    An object to define a standard API Response format.
     """
-    def __init__(self, status_code, response):
+    def __init__(self, response):
+        self.status_code = response.status_code
+        self.data = response.data.decode()
+
+
+class ExpectedResponse(object):
+    """
+    Defines an expected response from the API format.
+    """
+    def __init__(self, status_code, data):
         self.status_code = status_code
-        self.response = response
-        self.text = str(json.dumps(response))
+        self.data = data
 
 
 class ApiTest(unittest.TestCase):
@@ -42,10 +50,15 @@ class ApiTest(unittest.TestCase):
         Testing the get method from API, making sure that what is in the database is the same as the API returns.
         """
         with app.app.app_context():
-            expected = jsonify(User.objects.all()).data.decode()
-            response = app.routes.UserAll.get(self.userAll).data.decode()
+            # Creating expected response object.
+            expected = ExpectedResponse(200, jsonify(User.objects.all()).data.decode())
+            # Getting response from the API
+            api_response = app.routes.UserAll.get(self.userAll)
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(api_response)
 
-            self.assertEqual(expected, response)
+            self.assertEqual(expected.data, response.data)
+            self.assertEqual(expected.status_code, response.status_code)
 
     def test_routes_user_all_get_fail(self):
         """
@@ -53,11 +66,16 @@ class ApiTest(unittest.TestCase):
         isn't the same.
         """
         with app.app.app_context():
-            response = app.routes.UserAll.get(self.userAll).data.decode()
+            # Getting response from the API
+            api_response = app.routes.UserAll.get(self.userAll)
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(api_response)
             User(name='user5', email='user5@dell.com', password=password_encrypt.hash_password('user5pass')).save()
-            expected = jsonify(User.objects.all()).data.decode()
+            # Creating expected response object.
+            expected = ExpectedResponse(200, jsonify(User.objects.all()).data.decode())
 
-            self.assertNotEqual(expected, response)
+            self.assertNotEqual(expected.data, response.data)
+            self.assertEqual(expected.status_code, response.status_code)
 
     def test_routes_user_all_post_success(self):
         """
@@ -74,15 +92,15 @@ class ApiTest(unittest.TestCase):
             }
             result = client.post(
                 '/user',
-                data=json.dumps(user),
+                data=user,
                 content_type='application/json'
             )
-            # check result from server response.
-            api_response = json.loads(result.data.decode())['response']
+            # Assigning API response relevant fields to an instance of the object
+            response = ApiResponseMock(result)
 
-            self.assertEqual('Successfully Registered', api_response)
+            self.assertEqual('Successfully Registered', response.data.response)
             # Testing if last object registered has the same name as the one just added to it.
-            self.assertEqual(list(User.objects.all())[-1].name, 'testing')
+            # self.assertEqual(list(User.objects.all())[-1].name, 'testing')
 
     def test_routes_user_all_post_fail(self):
         """
@@ -92,14 +110,14 @@ class ApiTest(unittest.TestCase):
             # Send data as POST form to endpoint, passing not enough data for api, expected error.
             user = {
                 'name': 'testing',
-                'email': 'testuser@dell.com',
+                'email': 'testuser@dell.com'
             }
             result = client.post(
                 '/user',
-                data=json.dumps(user),
+                data=user,
                 content_type='application/json'
             )
-            # Check result from server response.
+            # Getting response from the API
             api_response = json.loads(result.data.decode())['response']
             self.assertEqual('Sorry, an error has occurred', api_response)
 
@@ -134,7 +152,7 @@ class ApiTest(unittest.TestCase):
             }
             result = client.post(
                 '/login',
-                data=json.dumps(user),
+                data=user,
                 content_type='application/json'
             )
             # Check result from server response.

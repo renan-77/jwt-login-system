@@ -32,10 +32,10 @@ class UserAll(Resource):
 
             # Adding new register to database
             User(name=data['name'], email=data['email'], password=data['password']).save()
-            return jsonify({'response': 'Successfully Registered'})
+            return jsonify({'response': 'Successfully Registered'}), 201
 
         except:
-            return jsonify({'response': 'Sorry, an error has occurred'})
+            return jsonify({'response': 'Sorry, an error has occurred'}), 401
 
 
 # Creating login route for post request.
@@ -62,13 +62,13 @@ class UserByEmail(Resource):
 
                     # Creating access token for user
                     access_token = create_access_token(identity=data['email'])
-                    return jsonify(message='Login Successful', login=True, access_token=access_token)
+                    return jsonify(message='Login Successful', login=True, access_token=access_token), 201
 
                 else:
-                    return jsonify(message='Password is wrong!', login=False)
+                    return jsonify(message='Password is wrong!', login=False), 401
 
             else:
-                return jsonify(message='User does not exist', login=False)
+                return jsonify(message='User does not exist', login=False), 401
 
         except Exception as e:
-            return jsonify(message='An error has occurred', error=str(e), login=False)
+            return jsonify(message='An error has occurred', error=str(e), login=False), 401
