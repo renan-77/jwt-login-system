@@ -10,34 +10,37 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
+    credentialsForm: FormGroup;
 
     whichUrl: string;
-
-    registerForm: FormGroup;
 
     constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute,
                 private snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
+        this.loadForm();
+    }
+
+    loadForm(): void{
         // Getting route from URL.
         this.whichUrl = this.router.url;
 
         // Loads the login form in case url is for login
         if (this.whichUrl === '/login'){
-            this.loginForm = new FormGroup({
-                email: new FormControl('', Validators.required),
+            this.credentialsForm = new FormGroup({
+                email: new FormControl('', [Validators.required, Validators.email]),
                 password: new FormControl('', Validators.required)
             });
-        // Loads the register form in case url is for register
+            console.log('Loaded login');
+            // Loads the register form in case url is for register
         }else if (this.whichUrl === '/register'){
-            this.registerForm = new FormGroup({
+            this.credentialsForm = new FormGroup({
                 name: new FormControl('', Validators.required),
-                email: new FormControl('', Validators.required),
+                email: new FormControl('', [Validators.required, Validators.email]),
                 password: new FormControl('', Validators.required)
             });
+            console.log('Loaded register');
         }
-
     }
 
     /**

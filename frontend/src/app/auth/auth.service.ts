@@ -4,10 +4,7 @@ import { Observable } from 'rxjs';
 import {JwtHelperService, JwtModuleOptions} from '@auth0/angular-jwt';
 
 
-@Injectable({
-    providedIn: 'root'
-})
-
+@Injectable()
 /**
  * Service used for authentication and API http calls.
  */

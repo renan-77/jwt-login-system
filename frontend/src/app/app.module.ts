@@ -21,6 +21,7 @@ import { HomeComponent } from './home/home.component';
 // Importing classes for access management.
 import {AuthGuard} from './auth/auth.guard';
 import {TokenInterceptor} from './auth/token.interceptor';
+import {AuthService} from './auth/auth.service';
 
 
 @NgModule({
@@ -28,7 +29,7 @@ import {TokenInterceptor} from './auth/token.interceptor';
         // Declaring components.
         AppComponent,
         LoginComponent,
-        HomeComponent
+        HomeComponent,
     ],
     imports: [
         // Importing modules from libraries.
@@ -53,7 +54,8 @@ import {TokenInterceptor} from './auth/token.interceptor';
         multi: true
     },
         // Providing AuthGuard with it's class.
-        AuthGuard
+        AuthGuard,
+        AuthService
     ],
     bootstrap: [AppComponent]
 })
