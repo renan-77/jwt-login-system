@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -26,4 +26,11 @@ describe('HomeComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+    it('should test if clearStorage method has been called once', fakeAsync(() => {
+        fixture.detectChanges();
+        spyOn(component, 'clearStorage');
+        (document.getElementById('btn-logout') as HTMLButtonElement).click();
+        expect(component.clearStorage).toHaveBeenCalledTimes(1);
+    }));
 });

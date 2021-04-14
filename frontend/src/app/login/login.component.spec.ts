@@ -53,6 +53,7 @@ describe('LoginComponent', () => {
         router.navigate([`${url}`]);
         tick();
         component.loadForm();
+        fixture.detectChanges();
     }
 
     /**
@@ -121,23 +122,26 @@ describe('LoginComponent', () => {
         expect((document.getElementById('submit-login')as HTMLButtonElement).disabled).toBeFalsy();
     }));
 
-    // it('should test if register submit button is enabled when the form is valid', fakeAsync(() => {
-    //     loadFormWithUrl('/register');
-    //     updateRegisterForm('renan', 'renan@email.com', 'password');
-    //     fixture.detectChanges();
-    //     expect((document.getElementById('submit-register')as HTMLButtonElement).disabled).toBeFalsy();
-    // }));
+    it('should test if register submit button is enabled when the form is valid', fakeAsync(() => {
+        loadFormWithUrl('/register');
+        updateRegisterForm('renan', 'renan@email.com', 'password');
+        fixture.detectChanges();
+        expect((document.getElementById('submit-register')as HTMLButtonElement).disabled).toBeFalsy();
+    }));
 
-    // it('should test if formSubmitted is true', waitForAsync(() => {
-    //     component.submitForm();
-    //     fixture.detectChanges();
-    //     expect(component.formSubmitted).toBeTruthy;
-    // }));
-    //
-    // it('should test if submitForm method has been called 0 times', waitForAsync(() => {
-    //     fixture.detectChanges();
-    //     spyOn(component, 'submitForm');
-    //     el.querySelector('button').click()
-    //     expect(component.submitForm).toHaveBeenCalledTimes(0);
-    // }));
+    it('should test if onLoginSubmit method has been called 0 times', fakeAsync(() => {
+        loadFormWithUrl('');
+        fixture.detectChanges();
+        spyOn(component, 'onLoginSubmit');
+        (document.getElementById('submit-login') as HTMLButtonElement).click();
+        expect(component.onLoginSubmit).toHaveBeenCalledTimes(0);
+    }));
+
+    it('should test if onRegisterSubmit method has been called 0 times', fakeAsync(() => {
+        loadFormWithUrl('/register');
+        fixture.detectChanges();
+        spyOn(component, 'onRegisterSubmit');
+        (document.getElementById('submit-register') as HTMLButtonElement).click();
+        expect(component.onRegisterSubmit).toHaveBeenCalledTimes(0);
+    }));
 });

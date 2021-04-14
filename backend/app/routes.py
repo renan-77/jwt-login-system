@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import jsonify, request, make_response
 from flask_restplus import Resource
 from app import api, password_encrypt, app
@@ -61,7 +62,7 @@ class UserByEmail(Resource):
                 if password_encrypt.compare_passwords(data['password'], User.objects(email=data['email'])[0].password):
 
                     # Creating access token for user
-                    access_token = create_access_token(identity=data['email'])
+                    access_token = create_access_token(expires_delta=timedelta(days=60), identity=data['email'])
                     return make_response(jsonify(message='Login Successful', login=True, access_token=access_token),
                                          201)
 
