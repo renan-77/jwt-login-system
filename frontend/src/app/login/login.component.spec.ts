@@ -3,8 +3,8 @@ import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular
 import {LoginComponent} from './login.component';
 import {Router, RouterModule} from '@angular/router';
 import {routes} from '../app-routing.module';
-import {AuthService} from '../auth/auth.service';
-import {AuthGuard} from '../auth/auth.guard';
+import {AuthService} from '../services/auth.service';
+import {AuthGuard} from '../guards/auth.guard';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
