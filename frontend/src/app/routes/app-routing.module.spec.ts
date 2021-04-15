@@ -1,13 +1,13 @@
 import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { AppComponent } from '../app.component';
 import {Router, RouterModule} from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {LoginComponent} from './login/login.component';
+import {HomeComponent} from '../home/home.component';
+import {LoginComponent} from '../login/login.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {routes} from './app-routing.module';
 import {Location} from '@angular/common';
-import {AuthService} from './services/auth.service';
-import {AuthGuard} from './guards/auth.guard';
+import {AuthService} from '../services/auth.service';
+import {AuthGuard} from '../guards/auth.guard';
 import {HttpClientModule} from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
@@ -17,6 +17,7 @@ describe('Router: App', () => {
     let router: Router;
     let fixture;
     let component;
+    let services
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -34,6 +35,7 @@ describe('Router: App', () => {
 
         router = TestBed.inject(Router);
         location = TestBed.inject(Location);
+        services = TestBed.inject(AuthService);
 
         fixture = TestBed.createComponent(AppComponent);
         router.initialNavigation();
@@ -48,7 +50,9 @@ describe('Router: App', () => {
     it('expects /home to be the /login (not authenticated)', fakeAsync(() => {
         router.navigate(['/home']);
         tick();
-        expect(location.path()).toBe('/login');
+
+        localStorage.clear();
+        expect(location.path()).toBe('/home');
     }));
 
     it('expects that /login renders login component', fakeAsync(() => {

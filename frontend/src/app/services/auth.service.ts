@@ -55,10 +55,8 @@ export class AuthService {
      * Registering user from form submit
      * @param user: object
      */
-    registerUser(user): void{
-        this.http.post(this.userUrl, user).subscribe(() => {
-            console.log('New user created');
-        });
+    registerUser(user): Observable<any>{
+        return this.http.post(this.userUrl, user);
     }
 
     getUsers(): Observable<any>{

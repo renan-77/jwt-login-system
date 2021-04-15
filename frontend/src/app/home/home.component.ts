@@ -17,6 +17,6 @@ export class HomeComponent implements OnInit {
      */
     clearStorage(): void{
         localStorage.clear();
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login']);
     }
 }

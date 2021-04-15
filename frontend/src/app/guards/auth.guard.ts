@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     canActivate(): boolean {
         // Checking if the user is authenticated.
         if (!this.auth.isAuthenticated()) {
-            this.router.navigateByUrl('login');
+            this.router.navigate(['login']);
             return false;
         }
         return true;
@@ -29,6 +29,6 @@ export class AuthGuard implements CanActivate {
      * Function to redirect user to login page.
      */
     redirectLogin(): void {
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login']);
     }
 }

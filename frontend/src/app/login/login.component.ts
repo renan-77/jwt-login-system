@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
             if (login === true){
                 // Setting received token to local storage.
                 localStorage.setItem('token', response.access_token);
-                this.router.navigateByUrl('/home');
+                this.router.navigate(['/home']);
             }else{
                 this.snackBar.open(response.message, 'Close', {
                     duration: 2000,
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
     onRegisterSubmit(user): void{
         try{
             this.authService.registerUser(user);
-            this.router.navigateByUrl('/login');
+            this.router.navigate(['/login']);
 
             // Pop-up message with user created.
             this.snackBar.open('New user created', 'Close', {
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
      * @param route: string
      */
     goTo(route): void{
-        this.router.navigateByUrl(route);
+        this.router.navigate([route]);
     }
 
 }

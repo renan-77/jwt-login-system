@@ -27,6 +27,11 @@ describe('HomeComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    // it('should test is logout button was clicked', () => {
+    //     fixture.detectChanges();
+    //
+    // });
+
     it('should test if clearStorage method has been called once', fakeAsync(() => {
         fixture.detectChanges();
         spyOn(component, 'clearStorage');

@@ -31,35 +31,33 @@ describe('AuthService', () => {
 
     describe('#userCheck()', () => {
         it('should retrieve users', () => {
-            const usersData = {
-                users: [
+            const users = [
                     {
                         _id: '605b0922882b8ff5f812c1f3',
                         name: 'Dovy',
                         email: 'dovydas@dell.com',
-                        password: '$2b$12$QlqA4noPR/jnmnKmX2lWTOdW1i3PhN.FFP9eBa.9Us0Qcijw8PGJO'
+                        password: 'dovydas'
                     },
                     {
                         _id: '605b091a882b8ff5f812c1f2',
                         name: 'Renan',
                         email: 'renan@dell.com',
-                        password: '$2b$12$3qqexDUsrdL6orxkqnSQF.0/mnhfrl5PKNyhsCw2dtTebdN2S9Wc.'
+                        password: 'renan'
                     },
                     {
                         _id: '605b0913882b8ff5f812c1f1',
                         name: 'Dylan',
                         email: 'dylan@dell.com',
-                        password: '$2b$12$CpVl1FeiA.cmuE8/J5VnWuewT9pSkFB3ndLE3MrmqNjhqyEOCCAd.'
+                        password: 'dylan'
                     }
-                ]
-            };
+            ];
 
             let responseUsers;
             service.getUsers().subscribe(response => {
                 responseUsers = response;
             });
 
-            expect(responseUsers).toEqual(usersData);
+            expect(responseUsers).toEqual(users);
         });
     });
 
@@ -67,7 +65,7 @@ describe('AuthService', () => {
         it('should check for login success', () => {
             const user = {
                 email: 'renan@dell.com',
-                password: '$2b$12$3qqexDUsrdL6orxkqnSQF.0/mnhfrl5PKNyhsCw2dtTebdN2S9Wc.'
+                password: 'renan'
             };
 
             const expectedResponse = {
@@ -82,7 +80,6 @@ describe('AuthService', () => {
 
             let apiResponse;
             service.checkUser(user).subscribe(response => {
-                console.log(response.response);
                 apiResponse = response.response;
             });
 
@@ -136,6 +133,24 @@ describe('AuthService', () => {
             expect(apiResponse.message).toEqual(expectedResponse.message);
             expect(apiResponse.login).toEqual(expectedResponse.login);
             expect(apiResponse.code).toEqual(expectedResponse.code);
+        });
+    });
+
+    describe('#registerUser()', () => {
+        it('should retrieve last user registered', () => {
+            const newUser = {
+                _id: '605b0913882b8ff5f812c1f2',
+                name: 'Yan',
+                email: 'yan@dell.com',
+                password: 'yan'
+            };
+
+            let responseUsers;
+            service.registerUser(newUser).subscribe(response => {
+                responseUsers = response;
+            });
+
+            expect(responseUsers).toEqual(newUser);
         });
     });
 });
