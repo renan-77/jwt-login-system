@@ -1,28 +1,8 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {Injectable, Injector} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {log} from "util";
-
-let users = [
-    {
-        _id: '605b0922882b8ff5f812c1f3',
-        name: 'Dovy',
-        email: 'dovydas@dell.com',
-        password: 'dovydas'
-    },
-    {
-        _id: '605b091a882b8ff5f812c1f2',
-        name: 'Renan',
-        email: 'renan@dell.com',
-        password: 'renan'
-    },
-    {
-        _id: '605b0913882b8ff5f812c1f1',
-        name: 'Dylan',
-        email: 'dylan@dell.com',
-        password: 'dylan'
-    }
-];
+import {responses} from '../../tests_data/mock_responses';
+import {users} from '../../tests_data/users';
 
 @Injectable()
 export class BackendInterceptor implements HttpInterceptor {
@@ -65,34 +45,6 @@ export class BackendInterceptor implements HttpInterceptor {
 
         // CHECK USER.
         else if (request.method === 'POST' && request.url === 'http://localhost:5000/login'){
-            // Creating mock responses.
-            const responses = {
-                success: {
-                    message: 'Login Successful',
-                    login: true,
-                    access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYxODM5MDMwOSwianRpI' +
-                        'joiY2FkYjlmYjEtNzllNi00ZjQ5LWFhOTktMDJlYjM0ZDAxMzYzIiwibmJmIjoxNjE4MzkwMzA5LCJ0eXBlIjoiYWNjZXNz' +
-                        'Iiwic3ViIjoicmVuYW5AZGVsbC5jb20iLCJleHAiOjE2MjM1NzQzMDl9.wEqyRHj-PiRPtYIAAo4ulAL2TTy27ytrPFPd7H' +
-                        'fqrqs',
-                    code: 201
-                },
-                wrong_pass: {
-                    message: 'Password is wrong!',
-                    login: false,
-                    code: 401
-                },
-                wrong_user: {
-                    message: 'User does not exist',
-                    login: false,
-                    code: 401
-                },
-                error: {
-                    message: 'An error has occurred',
-                    login: false,
-                    code: 406
-                }
-            };
-
             // Using searchDb function to find if user exists.
             const loginCheck = this.searchDb(request.body.email, request.body.password);
 

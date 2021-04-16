@@ -3,8 +3,8 @@ import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular
 import {LoginComponent} from './login.component';
 import {Router, RouterModule} from '@angular/router';
 import {routes} from '../routes/app-routing.module';
-import {AuthService} from '../services/auth.service';
-import {AuthGuard} from '../guards/auth.guard';
+import {AuthService} from '../auth/services/auth.service';
+import {AuthGuard} from '../auth/guards/auth.guard';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -82,7 +82,17 @@ describe('LoginComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    // Testing the goTo() function.
+    it('should redirect to home based on function attribute', () => {
+        component.goTo('home');
+        expect(location.path()).toBe('/home');
+    });
+
+    /**
+     * Tests for login form.
+     */
     describe('LoginForm', () => {
+        // Test for submit button to be disabled due to empty fields.
         it('should test if login submit button is disabled when the form is invalid -- Required fields are empty',
             fakeAsync(() => {
                 loadFormWithUrl('');
@@ -91,6 +101,7 @@ describe('LoginComponent', () => {
                 expect((document.getElementById('submit-login') as HTMLButtonElement).disabled).toBeTruthy();
             }));
 
+        // Test for submit button to be disabled due to invalid fields.
         it('should test if login submit button is disabled when the form is invalid -- Wrong format of email',
             fakeAsync(() => {
                 loadFormWithUrl('');
@@ -99,6 +110,7 @@ describe('LoginComponent', () => {
                 expect((document.getElementById('submit-login') as HTMLButtonElement).disabled).toBeTruthy();
             }));
 
+        // Test for submit to be enabled when the fields are valid.
         it('should test if login submit button is enabled when the form is valid', fakeAsync(() => {
             loadFormWithUrl('');
             updateLoginForm('renan@email.com', 'password@123');
@@ -107,6 +119,7 @@ describe('LoginComponent', () => {
             expect((document.getElementById('submit-login') as HTMLButtonElement).disabled).toBeFalsy();
         }));
 
+        // Testing if on submit button the corresponding function is being called.
         it('should test if onLoginSubmit method has been called 0 times', fakeAsync(() => {
             loadFormWithUrl('');
             fixture.detectChanges();
@@ -116,7 +129,11 @@ describe('LoginComponent', () => {
         }));
     });
 
+    /**
+     * Tests for register form.
+     */
     describe('RegisterForm', () => {
+        // Test for submit button to be disabled due to empty fields.
         it('should test if register submit button is disabled when the form is invalid -- Required fields are empty',
             fakeAsync(() => {
                 loadFormWithUrl('register');
@@ -125,7 +142,7 @@ describe('LoginComponent', () => {
                 expect((document.getElementById('submit-register') as HTMLButtonElement).disabled).toBeTruthy();
         }));
 
-
+        // Test for submit button to be disabled due to invalid fields.
         it('should test if register submit button is disabled when the form is invalid -- Wrong format of email',
             fakeAsync(() => {
                 loadFormWithUrl('register');
@@ -134,7 +151,7 @@ describe('LoginComponent', () => {
                 expect((document.getElementById('submit-register') as HTMLButtonElement).disabled).toBeTruthy();
         }));
 
-
+        // Test for submit to be enabled when the fields are valid.
         it('should test if register submit button is enabled when the form is valid', fakeAsync(() => {
             loadFormWithUrl('/register');
             updateRegisterForm('renan', 'renan@email.com', 'password');
@@ -142,6 +159,7 @@ describe('LoginComponent', () => {
             expect((document.getElementById('submit-register') as HTMLButtonElement).disabled).toBeFalsy();
         }));
 
+        // Testing if on submit button the corresponding function is being called.
         it('should test if onRegisterSubmit method has been called 0 times', fakeAsync(() => {
             loadFormWithUrl('/register');
             fixture.detectChanges();

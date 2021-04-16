@@ -5,7 +5,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AuthService} from '../services/auth.service';
-import {AppModule} from '../app.module';
+import {AppModule} from '../../app.module';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 
@@ -15,28 +15,20 @@ describe('AuthGuard', () => {
     let router: Router;
     let location: Location;
 
-    const routerMock = {navigate: jasmine.createSpy('navigate')};
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [AuthGuard, {provide: Router, useValue: routerMock}, AuthService],
+            providers: [AuthGuard, AuthService],
             imports: [HttpClientTestingModule, RouterTestingModule, AppModule]
         });
+
+        // Injecting required services.
         services = TestBed.inject(AuthService);
         guard = TestBed.inject(AuthGuard);
         router = TestBed.inject(Router);
         location = TestBed.inject(Location);
     });
 
-    // it('should redirect an unauthenticated user to the login route', () => {
-    //     expect(guard.canActivate()).toEqual(false);
-    //     expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
-    // });
-    //
-    // it('should allow the authenticated user to access app', () => {
-    //     spyOn(services, 'isAuthenticated').and.returnValue(true);
-    //     expect(guard.canActivate()).toEqual(true);
-    // });
-
+    // Defining test to return true on authGuard based on token.
     it('should return true for authGuard', fakeAsync(() => {
         router.navigate(['/home']);
         tick();
@@ -48,12 +40,18 @@ describe('AuthGuard', () => {
         expect(guard.canActivate()).toEqual(true);
     }));
 
+    // Defining test to return false on authGuard based on token.
     it('should return false for authGuard', fakeAsync(() => {
+        localStorage.clear();
         router.navigate(['/home']);
         tick();
 
-        localStorage.clear();
-
         expect(guard.canActivate()).toEqual(false);
+    }));
+
+    // Testing for redirect login function to redirect to login.
+    it('should return false for authGuard', fakeAsync(() => {
+        guard.redirectLogin();
+        expect(location.path()).toBe('/login');
     }));
 });

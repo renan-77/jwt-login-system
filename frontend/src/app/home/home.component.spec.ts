@@ -18,20 +18,18 @@ describe('HomeComponent', () => {
     });
 
     beforeEach(() => {
+        // Creating component instance from fixture.
         fixture = TestBed.createComponent(HomeComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
 
+    // Testing component to be truthy.
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-    // it('should test is logout button was clicked', () => {
-    //     fixture.detectChanges();
-    //
-    // });
-
+    // Checking for function call on click of button.
     it('should test if clearStorage method has been called once', fakeAsync(() => {
         fixture.detectChanges();
         spyOn(component, 'clearStorage');

@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import {AuthService} from './auth.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BackendInterceptor} from '../interceptors/backend.interceptor';
+import {users} from '../../tests_data/users';
 
 describe('AuthService', () => {
     let injector: TestBed;
@@ -14,45 +15,33 @@ describe('AuthService', () => {
             imports: [HttpClientTestingModule],
             providers: [AuthService,
                 {
+                    // Importing backend interceptor which is responsible for the mock-backend.
                     provide: HTTP_INTERCEPTORS,
                     useClass: BackendInterceptor,
                     multi: true
                 }
             ]
         });
+
+        // Injecting relevant libraries.
         injector = getTestBed();
         service = injector.inject(AuthService);
         httpMock = injector.inject(HttpTestingController);
     });
 
     afterEach(() => {
+        // Verifies that all http requests were handled.
         httpMock.verify();
     });
 
+    /**
+     * Testing userCheck() service, that service returns a list of the users in the mock database.
+     */
     describe('#userCheck()', () => {
         it('should retrieve users', () => {
-            const users = [
-                    {
-                        _id: '605b0922882b8ff5f812c1f3',
-                        name: 'Dovy',
-                        email: 'dovydas@dell.com',
-                        password: 'dovydas'
-                    },
-                    {
-                        _id: '605b091a882b8ff5f812c1f2',
-                        name: 'Renan',
-                        email: 'renan@dell.com',
-                        password: 'renan'
-                    },
-                    {
-                        _id: '605b0913882b8ff5f812c1f1',
-                        name: 'Dylan',
-                        email: 'dylan@dell.com',
-                        password: 'dylan'
-                    }
-            ];
-
+            // Creating variable to assign to the response of the API.
             let responseUsers;
+            // Calling service.
             service.getUsers().subscribe(response => {
                 responseUsers = response;
             });
@@ -61,13 +50,19 @@ describe('AuthService', () => {
         });
     });
 
+    /**
+     * Testing userLogin() service, that service checks login of user based on it's credentials.
+     */
     describe('#checkLogin()', () => {
+        // Test for when login credentials match.
         it('should check for login success', () => {
+            // Creating body for request.
             const user = {
                 email: 'renan@dell.com',
                 password: 'renan'
             };
 
+            // Creating expected response.
             const expectedResponse = {
                 message: 'Login Successful',
                 login: true,
@@ -78,66 +73,87 @@ describe('AuthService', () => {
                 code: 201
             };
 
+            // Creating variable to assign to the response of the API.
             let apiResponse;
+
+            // Calling service.
             service.checkUser(user).subscribe(response => {
                 apiResponse = response.response;
             });
 
+            // Checking response elements.
             expect(apiResponse.message).toEqual(expectedResponse.message);
             expect(apiResponse.login).toEqual(expectedResponse.login);
             expect(apiResponse.access_token).toEqual(expectedResponse.access_token);
             expect(apiResponse.code).toEqual(expectedResponse.code);
         });
 
+        // Testing for when the user matches but not the password.
         it('should check for login fail on wrong password', () => {
+            // Creating body for request.
             const user = {
                 email: 'renan@dell.com',
                 password: 'aaaaa'
             };
 
+            // Creating expected response.
             const expectedResponse = {
                 message: 'Password is wrong!',
                 login: false,
                 code: 401
             };
 
+            // Creating variable to assign to the response of the API.
             let apiResponse;
+
+            // Calling service.
             service.checkUser(user).subscribe(response => {
                 console.log(response.response);
                 apiResponse = response.response;
             });
 
+            // Checking response elements.
             expect(apiResponse.message).toEqual(expectedResponse.message);
             expect(apiResponse.login).toEqual(expectedResponse.login);
             expect(apiResponse.code).toEqual(expectedResponse.code);
         });
 
         it('should check for login fail on user not found', () => {
+            // Creating body for request.
             const user = {
                 email: 'renann@dell.com',
                 password: 'aaaaa'
             };
 
+            // Creating expected response.
             const expectedResponse = {
                 message: 'User does not exist',
                 login: false,
                 code: 401
             };
 
+            // Creating variable to assign to the response of the API.
             let apiResponse;
+
+            // Calling service.
             service.checkUser(user).subscribe(response => {
                 console.log(response.response);
                 apiResponse = response.response;
             });
 
+            // Checking response elements.
             expect(apiResponse.message).toEqual(expectedResponse.message);
             expect(apiResponse.login).toEqual(expectedResponse.login);
             expect(apiResponse.code).toEqual(expectedResponse.code);
         });
     });
 
+    /**
+     * Testing registerUser() service.
+     */
     describe('#registerUser()', () => {
         it('should retrieve last user registered', () => {
+            // Creating user obj that will be registered in the database.
             const newUser = {
                 _id: '605b0913882b8ff5f812c1f2',
                 name: 'Yan',
@@ -145,11 +161,13 @@ describe('AuthService', () => {
                 password: 'yan'
             };
 
+            // Creating variable to assign to the response of the API.
             let responseUsers;
             service.registerUser(newUser).subscribe(response => {
                 responseUsers = response;
             });
 
+            // Checking if last user registered is the same as the new one created.
             expect(responseUsers).toEqual(newUser);
         });
     });
