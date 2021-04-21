@@ -1,0 +1,45 @@
+<!--Checking if url that the component was accessed is /login-->
+<div *ngIf="whichUrl == '/login'" class="form primary-blue main-content" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="25">
+        <mat-toolbar class="light-blue">Login Page</mat-toolbar>
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form"
+              [formGroup]="credentialsForm"
+                (ngSubmit)="onLoginSubmit(credentialsForm.value)">
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input type="password" matInput placeholder="Password" formControlName="password">
+            </mat-form-field>
+            <button mat-raised-button type="submit" id="submit-login" class="light-blue" [disabled]="!credentialsForm.valid">Login</button>
+            <button (click)="goTo('register')" mat-raised-button type="button" class="dark-blue margin-10">Register</button>
+        </form>
+    </mat-card>
+</div>
+
+<!--Checking if url that the component was accessed is /register-->
+<div *ngIf="whichUrl == '/register'" class="form primary-blue main-content" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="25">
+        <mat-toolbar class="light-blue">Login Page</mat-toolbar>
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form"
+              [formGroup]="credentialsForm"
+              (ngSubmit)="onRegisterSubmit(credentialsForm.value)">
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" formControlName="name">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input type="password" matInput placeholder="Password" formControlName="password">
+            </mat-form-field>
+            <button mat-raised-button type="submit" id="submit-register" class="light-blue" [disabled]="!credentialsForm.valid">Register</button>
+            <button (click)="goTo('login')" mat-raised-button type="button" class="dark-blue margin-10">Back</button>
+        </form>
+    </mat-card>
+</div>

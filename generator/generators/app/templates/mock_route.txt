@@ -1,0 +1,16 @@
+
+# Creating user route for get and post requests.
+@api.route('/<%= customRoute %>')
+class <%= customRoute %>All(Resource):
+    def get(self):
+        return
+    def post(self):
+        return
+
+@api.route('/<%= customRoute %>_single')
+class <%= customRoute %>One(Resource):
+    def get(self):
+        return
+    def post(self):
+        return
+
