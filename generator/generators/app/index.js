@@ -1,5 +1,6 @@
 "use strict";
 const Generator = require("yeoman-generator");
+const customUtils = require("../custom_utils");
 
 module.exports = class extends Generator {
     async prompting() {
@@ -27,10 +28,7 @@ module.exports = class extends Generator {
         ]);
     }
 
-    //this.log()
-
-    writing(){
-
+    writing() {
         /**
          * Generator for the backend.
          */
@@ -75,43 +73,63 @@ module.exports = class extends Generator {
         /**
          * Dynamic Routes Implementation
          */
-            // Creating array of words from the input string.
-        let routes = this.answers.customRoute.split(" ");
-        // Loop iterates through array.
-        for(let i=0; i < routes.length; i++) {
-            // Creating instance of mock_route in destination as a python file with custom variables based on iteration.
-            this.fs.copyTpl(
-                this.templatePath("mock_route.txt"),
-                this.destinationPath(this.answers.projectName + "/custom_route.py"),
-                // Getting routes from user input array.
-                { customRoute: routes[i] }
-            );
 
-            // Assigning variable to current custom_route.py from iteration.
-            let currentFile = this.fs.read(this.destinationPath(
-                this.answers.projectName + "/custom_route.py"), "utf8");
+        this.log("Starts in here");
 
-            // At the first iteration it creates a new routes.py file based on the original one in templates.
-            if(i === 0){
-                // Copies routes.py
-                this.fs.copy(
-                    this.templatePath("backend/app/routes.py"),
-                    this.destinationPath(this.answers.projectName + "/backend/app/routes.py")
-                );
-                // Appending data from currentFile to routes.py in destination.
-                this.fs.append(
-                    this.destinationPath(this.answers.projectName + "/backend/app/routes.py"), currentFile
-                );
-            }else{
-                // Appending data from currentFile to routes.py in destination.
-                this.fs.append(
-                    this.destinationPath(this.answers.projectName + "/backend/app/routes.py"), currentFile
-                );
-            }
-        }
-        // Deleting custom_route.py
-        this.fs.delete(this.destinationPath(this.answers.projectName + "/custom_route.py"));
+        customUtils.routeAdd(
+            this,
+            this.answers.projectName,
+            this.answers.customRoute
+        );
 
+        customUtils.checkNeedle(
+            this,
+            "#new-route-here",
+            this.destinationPath(
+                this.answers.projectName + "/backend/app/routes.py"
+            )
+        );
+
+        // // Creating array of words from the input string.
+        // let routes = this.answers.customRoute.split(" ");
+        // // Loop iterates through array.
+        // for (let i = 0; i < routes.length; i++) {
+        //     // Creating instance of mock_route in destination as a python file with custom variables based on iteration.
+        //     this.fs.copyTpl(
+        //         this.templatePath("mock_route.txt"),
+        //         this.destinationPath(this.answers.projectName + "/custom_route.py"),
+        //         // Getting routes from user input array.
+        //         { customRoute: routes[i] }
+        //     );
+        //
+        //     // Assigning variable to current custom_route.py from iteration.
+        //     let currentFile = this.fs.read(this.destinationPath(
+        //         this.answers.projectName + "/custom_route.py"
+        //         ),
+        //         "utf8"
+        //     );
+        //
+        //     // At the first iteration it creates a new routes.py file based on the original one in templates.
+        //     if (i === 0){
+        //         // Copies routes.py
+        //         this.fs.copy(
+        //             this.templatePath("backend/app/routes.py"),
+        //             this.destinationPath(this.answers.projectName + "/backend/app/routes.py")
+        //         );
+        //         // Appending data from currentFile to routes.py in destination.
+        //         this.fs.append(
+        //             this.destinationPath(this.answers.projectName + "/backend/app/routes.py"), currentFile
+        //         );
+        //     } else {
+        //         // Appending data from currentFile to routes.py in destination.
+        //         this.fs.append(
+        //             this.destinationPath(this.answers.projectName + "/backend/app/routes.py"), currentFile
+        //         );
+        //     }
+        // }
+        //
+        // // Deleting custom_route.py
+        // this.fs.delete(this.destinationPath(this.answers.projectName + "/custom_route.py"));
 
         /**
          * Generator for the frontend.
@@ -272,10 +290,7 @@ module.exports = class extends Generator {
         /**
          * src/app/home/
          */
-
     }
 
-    install(){
-
-    }
+    install() {}
 };

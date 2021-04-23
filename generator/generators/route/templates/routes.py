@@ -75,4 +75,4 @@ class UserByEmail(Resource):
         except Exception as e:
             return make_response(jsonify(message='An error has occurred', error=str(e), login=False), 406)
 
-#new-route-here
+#newRoute
