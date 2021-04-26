@@ -1,14 +1,14 @@
 /**
  * Function to check if the file to be written has the needle to be replaced.
- * @param appContext - The context of the class extended to Generator (this).
+ * @param generatorContext - The context of the class extended to Generator (this).
  * @param needle - A string in reference to a comment in the file to be replaced.
  * @param filePath - The full path for the file to be written.
  */
-function checkNeedle(appContext, needle, filePath) {
-    appContext.log("Checking needle here");
+function checkNeedle(generatorContext, needle, filePath) {
+    generatorContext.log("Checking needle here");
 
     // Reading file and assigning a string list to a variable.
-    let lines = appContext.fs.read(filePath, "utf8").split("\n");
+    let lines = generatorContext.fs.read(filePath, "utf8").split("\n");
 
     // Checking if needle is in the string list 'lines', if it is, checks it's index.
     let otherwiseLineIndex = 0;
@@ -18,7 +18,7 @@ function checkNeedle(appContext, needle, filePath) {
         }
     });
 
-    appContext.log("Index of needle: " + otherwiseLineIndex);
+    generatorContext.log("Index of needle: " + otherwiseLineIndex);
 }
 
 /**
@@ -44,12 +44,6 @@ class ${routeName}WithId(Resource):
     def post(self):
         return
 `;
-
-    appContext.fs.copy(
-        appContext.templatePath("backend/app/routes.py"),
-        appContext.destinationPath(projectName + "/backend/app/routes.py")
-    );
-
     appContext.fs.append(
         appContext.destinationPath(projectName + "/backend/app/routes.py"),
         newRoute

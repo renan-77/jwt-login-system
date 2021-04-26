@@ -32,49 +32,23 @@ module.exports = class extends Generator {
         /**
          * Generator for the backend.
          */
-        // this.fs.copy(
-        //     this.templatePath("backend/app.py"),
-        //     this.destinationPath(this.answers.projectName + "/backend/app.py")
-        // );
-        // this.fs.copyTpl(
-        //     this.templatePath("backend/config.py"),
-        //     this.destinationPath(this.answers.projectName + "/backend/config.py"),
-        //     { dbName: this.answers.dbName }
-        // );
-        // this.fs.copy(
-        //     this.templatePath("backend/requirements.txt"),
-        //     this.destinationPath(this.answers.projectName + "/backend/requirements.txt")
-        // );
-        // this.fs.copy(
-        //     this.templatePath("backend/app/__init__.py"),
-        //     this.destinationPath(this.answers.projectName + "/backend/app/__init__.py")
-        // );
-        // this.fs.copy(
-        //     this.templatePath("backend/app/password_encrypt.py"),
-        //     this.destinationPath(this.answers.projectName + "/backend/app/password_encrypt.py")
-        // );
-        // // this.fs.copy(
-        // //     this.templatePath("backend/app/routes.py"),
-        // //     this.destinationPath(this.answers.projectName + "/backend/app/routes.py")
-        // // );
-        // this.fs.copy(
-        //     this.templatePath("backend/app/models/__init__.py"),
-        //     this.destinationPath(this.answers.projectName + "/backend/app/models/__init__.py")
-        // );
-        //
-        // // Checking if user_model variable is Yes.
-        // if(this.answers.user_model === "Yes"){
-        //     this.fs.copy(
-        //         this.templatePath("backend/app/models/user.py"),
-        //         this.destinationPath(this.answers.projectName + "/backend/app/models/user.py")
-        //     );
-        // }
-        //
+
+        this.fs.copy(
+            this.templatePath("backend"),
+            this.destinationPath(this.answers.projectName + "/backend")
+        );
+
+        this.fs.copyTpl(
+            this.templatePath("backend/config.py"),
+            this.destinationPath(
+                this.answers.projectName + "/backend/config.py"
+            ),
+            { dbName: this.answers.dbName }
+        );
+
         /**
          * Dynamic Routes Implementation
          */
-
-        this.log("Starts in here");
 
         customUtils.routeAdd(
             this,
