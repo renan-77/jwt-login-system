@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "<%= projectName %>",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

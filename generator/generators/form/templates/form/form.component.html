@@ -1,0 +1,15 @@
+<!--Checking if url that the component was accessed is /login-->
+<div *ngIf="whichUrl == '/login'" class="form primary-blue main-content" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="25">
+        <mat-toolbar class="light-blue">Login Page</mat-toolbar>
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form"
+              [formGroup]="credentialsForm"
+                (ngSubmit)="onLoginSubmit(credentialsForm.value)">
+
+            <%= fieldsHtml %>
+
+            <button mat-raised-button type="submit" id="submit-login" class="light-blue"
+                    [disabled]="!credentialsForm.valid">Login</button>
+        </form>
+    </mat-card>
+</div>

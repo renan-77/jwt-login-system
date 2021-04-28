@@ -14,6 +14,6 @@ module.exports = class extends Generator {
     }
 
     writing() {
-        customUtils.addRoute(this, this.answers);
+        customUtils.addRoute(this);
     }
 };
